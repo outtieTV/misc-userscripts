@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube Auto-Next Stopper
 // @namespace    http://tampermonkey.net/
-// @version      1.1
+// @version      1.2
 // @description  Automatically pauses the YouTube video 3 seconds before the end to prevent the auto-next video feature from starting.
 // @author       OuttieTV
 // @match        *://*.youtube.com/watch*
@@ -13,11 +13,26 @@
     'use strict';
 
     const PAUSE_THRESHOLD_SECONDS = 3.0; // seconds before end when pause is active
+    const STORAGE_KEY = 'yt-auto-next-pause-active';
+
     let currentVideoId = null;
     let rafId = null;
 
-    // Inverted state: true = **pause is active** (gray arrow), false = pause disabled (white arrow)
-    let pauseActive = true; // start with pause enabled (gray arrow)
+    // -------------------------------------------------
+    // State persistence
+    // -------------------------------------------------
+    function loadState() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        // Default to pause enabled (gray) if nothing is stored
+        return stored === null ? true : stored === 'true';
+    }
+
+    function saveState(value) {
+        localStorage.setItem(STORAGE_KEY, value);
+    }
+
+    // Inverted state: true = pause active (gray arrow), false = pause disabled (white arrow)
+    let pauseActive = loadState(); // load on script start
 
     // -------------------------------------------------
     // UI – create and inject the toggle button
@@ -35,6 +50,7 @@
         updateButtonAppearance(btn);
         btn.addEventListener('click', () => {
             pauseActive = !pauseActive; // flip the rule
+            saveState(pauseActive); // persist
             updateButtonAppearance(btn);
             // If we just turned pause back on, start watching the current video again
             const video = findVideoElement();
@@ -45,7 +61,7 @@
 
     function updateButtonAppearance(btn) {
         btn.textContent = '→';
-        // White when pause is **disabled**, gray when pause is **enabled**
+        // White when pause is disabled, gray when pause is enabled
         btn.style.color = pauseActive ? '#888' : '#fff';
     }
 
