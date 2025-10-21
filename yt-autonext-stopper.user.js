@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         YouTube Auto-Next Stopper
 // @namespace    http://tampermonkey.net/
-// @version      1.3
+// @version      1.2
 // @description  Automatically pauses the YouTube video 3 seconds before the end to prevent the auto-next video feature from starting.
 // @author       OuttieTV
 // @match        *://*.youtube.com/watch*
@@ -11,12 +11,6 @@
 
 (function () {
     'use strict';
-
-    // Check if the current URL contains the "list=" parameter.
-    // If it doesn't, the script exits immediately without running any other logic.
-    if (!window.location.href.includes('list=')) {
-        return;
-    }
 
     const PAUSE_THRESHOLD_SECONDS = 3.0; // seconds before end when pause is active
     const STORAGE_KEY = 'yt-auto-next-pause-active';
