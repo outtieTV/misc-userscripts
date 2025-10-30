@@ -6,7 +6,8 @@ A userscript that pauses youtube.com videos when a few seconds are left to preve
 While autoplay next recommendations have a toggle button and many toggle userscripts, playlists such as watch-later do not have a way to only play one video at a time. So, I wrote this userscript to toggle autonext for playlists. An arrow ( -> ) appears next to the title of the youtube video.
 
 # yt-autoexpand-description
-A userscript that automatically expands youtube.com video descriptions.
+A userscript that automatically expands youtube.com video descriptions.<br />
+There is currently a bug with autoexpand description that somehow blocks right-click functionality on the video. I will fix this.
 
 # yt-align-metadata
 A userscript that centers metadata on youtube.com videos.
