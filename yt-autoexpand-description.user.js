@@ -3,7 +3,8 @@
 // @version      1.0
 // @description  Clicks the “more” button as soon as it appears.
 // @author       OuttieTV
-// @match        *://*.youtube.com/watch*
+// @match        https://*.youtube.com/*
+// @match        http://*.youtube.com/*
 // @grant        none
 // ==/UserScript==
 
