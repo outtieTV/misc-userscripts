@@ -1,10 +1,11 @@
 // ==UserScript==
-// @name         Youtube Center Metadata
+// @name         YouTube Center Metadata
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Reliably centers YouTube video metadata (title, channel info, description) under the video player — even on navigation or layout shifts.
 // @author       OuttieTV
-// @match        *://www.youtube.com/watch*
+// @match        https://*.youtube.com/*
+// @match        http://*.youtube.com/*
 // @grant        GM_addStyle
 // @run-at       document-idle
 // ==/UserScript==
@@ -22,6 +23,7 @@
             margin: 0 auto !important; /* simple, strong centering */
             padding: 0 16px !important;
             box-sizing: border-box !important;
+            border-radius: 15px;
         }
 
         /* 2. Force its ancestor containers to center child elements.
@@ -37,6 +39,7 @@
             max-width: 1280px !important;
             width: 100% !important;
             margin: 0 auto !important;
+            text-align: center;
         }
 
         /* 4. Ensure the video owner/channel section is contained and centered */
