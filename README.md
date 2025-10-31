@@ -14,3 +14,6 @@ A userscript that centers metadata on youtube.com videos.
 
 # yt-time-remaining
 A userscript that shows time remaining on youtube.com videos by prefixing the title in HOUR:MINUTE:SECOND format - and counts down as the video progresses.
+
+# ttv-hide-unwanted
+A userscript that hides unwanted buttons on twitch.tv (subscribe, gift subs, bits)
