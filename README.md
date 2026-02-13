@@ -15,4 +15,7 @@ A userscript that centers metadata on youtube.com videos.
 A userscript that shows time remaining on youtube.com videos by prefixing the title in HOUR:MINUTE:SECOND format - and counts down as the video progresses.
 
 # ttv-hide-unwanted
-A userscript that hides unwanted buttons on twitch.tv (subscribe, gift subs, bits)
+A userscript that hides unwanted buttons on twitch.tv (subscribe, gift subs, bits).
+
+# ff-enable-rightclick
+A userscript that enables right click on sites that block it, designed for Firefox (might work with chrome).
