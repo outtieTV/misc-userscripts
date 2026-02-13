@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         Sidebar Collapse + Grid Expand
-// @namespace    https://duckduckgo.com/
-// @description  sidebar
+// @name         iShowMovies Sidebar
+// @namespace    outtieTV
+// @description  sidebar toggle
 // @version      1.0
 // @match        *://ishowmovies.org/*
 // @grant        none
@@ -38,7 +38,7 @@
         });
 
         const toggleBtn = document.createElement('button');
-        toggleBtn.textContent = 'Collapse Sidebar & Expand Video';
+        toggleBtn.textContent = 'Collapse Sidebar';
         styleBtn(toggleBtn);
 
         let isExpanded = false;
@@ -53,7 +53,7 @@
                 // Change Grid from 3 columns to 1 column
                 gridContainer.classList.replace('md:grid-cols-3', 'md:grid-cols-1');
 
-                toggleBtn.textContent = 'Restore Layout';
+                toggleBtn.textContent = 'Expand Sidebar';
                 toggleBtn.style.background = '#d7191c';
             } else {
                 // Show Sidebar
