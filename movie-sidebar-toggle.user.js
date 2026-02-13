@@ -62,7 +62,7 @@
                 // Change Grid back to 3 columns
                 gridContainer.classList.replace('md:grid-cols-1', 'md:grid-cols-3');
 
-                toggleBtn.textContent = 'Collapse Sidebar & Expand Video';
+                toggleBtn.textContent = 'Collapse Sidebar';
                 toggleBtn.style.background = '#0060df';
             }
         };
