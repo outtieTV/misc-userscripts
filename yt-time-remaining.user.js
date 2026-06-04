@@ -1,18 +1,17 @@
 // ==UserScript==
-// @name         YouTube Time Remaining
+// @name         YouTube Time Remaining (floating badge)
 // @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  Shows time remaining (HH:MM:SS) before the video title on YouTube.
-// @author       OuttieTV
+// @version      1.1
+// @description  Shows time remaining (HH:MM:SS) as a floating badge next to the title on YouTube.
+// @author       OuttieTV (modified by ChatGPT)
 // @match        https://*.youtube.com/*
-// @match        http://*.youtube.com/*
 // @grant        none
 // ==/UserScript==
 
 (function () {
     'use strict';
 
-    // Helper to format seconds as HH:MM:SS
+    // ---------- helpers ----------
     function formatTime(seconds) {
         const h = Math.floor(seconds / 3600);
         const m = Math.floor((seconds % 3600) / 60);
@@ -22,40 +21,54 @@
             .padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
     }
 
-    // Update the title with remaining time
-    function updateTitle() {
+    // create (or retrieve) the floating element
+    function getBadge() {
+        let badge = document.getElementById('yt-remaining-badge');
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.id = 'yt-remaining-badge';
+            // basic styling – adjust as you like
+            Object.assign(badge.style, {
+                background: '#222',
+                color: '#fff',
+                padding: '2px 6px',
+                borderRadius: '4px',
+                fontSize: '12px',
+                marginLeft: '8px',
+                verticalAlign: 'middle',
+                opacity: '0.9',
+                cursor: 'default'
+            });
+            // insert next to the title element
+            const titleEl = document.querySelector('#title h1 yt-formatted-string[title]');
+            if (titleEl) titleEl.parentNode.appendChild(badge);
+        }
+        return badge;
+    }
+
+    // ---------- main logic ----------
+    function updateBadge() {
         const video = document.querySelector('video');
         const titleEl = document.querySelector('#title h1 yt-formatted-string[title]');
         if (!video || !titleEl) return;
 
-        const duration = video.duration;
-        const current = video.currentTime;
-        const remaining = Math.max(0, duration - current);
-        const prefix = formatTime(remaining) + ' – ';
-
-        // Avoid duplicating the prefix if it already exists
-        if (!titleEl.textContent.startsWith(prefix)) {
-            // Preserve the original title for later updates
-            titleEl.dataset.originalTitle = titleEl.dataset.originalTitle || titleEl.textContent;
-            titleEl.textContent = prefix + titleEl.dataset.originalTitle;
-        }
+        const remaining = Math.max(0, video.duration - video.currentTime);
+        const badge = getBadge();
+        badge.textContent = formatTime(remaining);
     }
 
-    // Observe changes to the title element (e.g., when navigating to a new video)
-    const observer = new MutationObserver(() => {
-        // Reset stored original title when a new title element appears
-        const titleEl = document.querySelector('#title h1 yt-formatted-string[title]');
-        if (titleEl) {
-            delete titleEl.dataset.originalTitle;
-        }
+    // Reset badge when the title changes (e.g., navigation to another video)
+    const titleObserver = new MutationObserver(() => {
+        // remove the old badge so a fresh one can be attached to the new title element
+        const oldBadge = document.getElementById('yt-remaining-badge');
+        if (oldBadge) oldBadge.remove();
     });
 
-    // Start observing the container that holds the title
     const titleContainer = document.querySelector('#title');
     if (titleContainer) {
-        observer.observe(titleContainer, { childList: true, subtree: true });
+        titleObserver.observe(titleContainer, { childList: true, subtree: true });
     }
 
-    // Periodic update every second
-    setInterval(updateTitle, 1000);
+    // update every second
+    setInterval(updateBadge, 1000);
 })();
